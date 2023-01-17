@@ -59,10 +59,9 @@ const changeQuantity = (type) => {
 }
 
 const message = ref(false)
-
 const cartStore = useCartStore()
-
 let timer
+
 const addToCart = (product, quantity) => {
     cartStore.addToCart(product,quantity)
     message.value = `<b>"${product.title}"</b> в количестве <b>${quantity}</b> шт. добавлен в корзину`
@@ -153,27 +152,33 @@ const addToFavorite = (product, quantity) => {
                         <span>акция -20%</span>
                     </div>
                     <div class="detail__size">
-                        <input type="text" name="size" id="size" placeholder="Выбрать размер">
-                        <svg  class="detail__size-down" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.75 3.75L7.75 11.75L1.25 3.75" stroke="#333333"/>
-                        </svg>
+                        <select name="size" id="size">
+                            <option class="detail__size-default" >Выбрать размер</option>
+                            <option value="22">22</option>
+                            <option value="24">24</option>
+                            <option value="26">26</option>
+                        </select>
                     </div>
                     <div class="detail__determine">Определить размер</div>
                     <div class="detail__cart">
-                        <div class="detail__cart-count">
-                            <span class="detail__cart-plus" @click="changeQuantity('plus')">+</span>
-                            <span>{{ quantity }}</span>
-                            <span class="detail__cart-minus" @click="changeQuantity('minus')">-</span>
+                        <div class="detail__wrapper">
+                            <div class="detail__cart-count">
+                                <span class="detail__cart-plus" @click="changeQuantity('plus')">+</span>
+                                <span>{{ quantity }}</span>
+                                <span class="detail__cart-minus" @click="changeQuantity('minus')">-</span>
+                            </div>
+                            <div class="detail__cart-right" >
+                                <button class="detail__cart-btn" @click="addToCart(product, quantity)">Добавить в корзину</button>
+                                <button class="detail__cart-favorite" @click="addToFavorite(product,quantity)">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7.90002 3.0948C6.69981 -2.52108 -2.59119 1.90389 1.76037 7.60175C6.11193 13.2996 8.40002 15.4908 8.40002 15.4908" stroke="#FFFFFF"/>
+                                        <path d="M7.89415 3.0948C9.09435 -2.52108 18.7304 1.90389 14.3789 7.60175C10.0273 13.2996 7.70001 15.5 7.70001 15.5" stroke="#FFFFFF"/>
+                                        <path d="M7.39099 2.70752L8.4043 2.70757L8.38337 3.24079H7.39099V2.70752Z" fill="#FFFFFF"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-                        <div class="detail__cart-right message" >
-                            <button class="detail__cart-btn" @click="addToCart(product, quantity)">Добавить в корзину</button>
-                            <button class="detail__cart-favorite" @click="addToFavorite(product,quantity)">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7.90002 3.0948C6.69981 -2.52108 -2.59119 1.90389 1.76037 7.60175C6.11193 13.2996 8.40002 15.4908 8.40002 15.4908" stroke="#FFFFFF"/>
-                                    <path d="M7.89415 3.0948C9.09435 -2.52108 18.7304 1.90389 14.3789 7.60175C10.0273 13.2996 7.70001 15.5 7.70001 15.5" stroke="#FFFFFF"/>
-                                    <path d="M7.39099 2.70752L8.4043 2.70757L8.38337 3.24079H7.39099V2.70752Z" fill="#FFFFFF"/>
-                                </svg>
-                            </button>
+                        <div class="detail__message message">
                             <transition name="message">
                                 <div class="message__info" v-if="message" v-html="message" />
                             </transition>
@@ -351,20 +356,16 @@ const addToFavorite = (product, quantity) => {
         width: 100%;
         height: 44px;
 
-        input {
+        select {
             width: 100%;
             height: 100%;
             padding: 12px 16px;
             border:1px solid var(--secondary-color);
+        }
 
-            &:focus-visible {
-                outline: none;
-            }
-
-            &::placeholder {
-                letter-spacing: var(--letter-spacing);
-                font-size: 14px;
-            }
+        &-default {
+            letter-spacing: var(--letter-spacing);
+            font-size: 14px;
         }
 
         &-down {
@@ -390,8 +391,9 @@ const addToFavorite = (product, quantity) => {
     &__cart {
         margin-top: 40px;
         display: flex;
-        align-items: center;
-        height: 44px;
+        flex-direction: column;
+        height: auto;
+        width: 100%;
 
         &-count {
             display: flex;
@@ -424,7 +426,7 @@ const addToFavorite = (product, quantity) => {
         &-right {
             display: flex;
             align-items: center;
-            height: 44px;
+            height:100%;
             margin-left: 12px;
         }
 
@@ -450,7 +452,7 @@ const addToFavorite = (product, quantity) => {
             justify-content: center;
             margin-left: 4px;
             width: 44px;
-            height: 44px;
+            height: 100%;
             border: none;
             background-color: var(--secondary-color);
             transition: var(--transition);
@@ -460,6 +462,13 @@ const addToFavorite = (product, quantity) => {
                 background-color: var(--darkGrey-color);
             }
         }
+    }
+
+    &__wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        height: 44px;
     }
 
     &__sale {
@@ -541,8 +550,8 @@ const addToFavorite = (product, quantity) => {
         width: 100%;
 
         &__info {
-            position: absolute;
-            margin-top: 85px;
+            // position: absolute;
+            margin-top: 15px;
         }
     }
 
@@ -587,14 +596,17 @@ const addToFavorite = (product, quantity) => {
 @media (max-width:576px) {
     .detail {
         &__cart {
-            flex-direction: column;
-            height: auto;
-            align-items: flex-start;
-
             &-right {
                 margin-left: 0;
                 margin-top: 15px;
+                height: 44px;
             }
+        }
+
+        &__wrapper {
+            flex-direction: column;
+            height: auto;
+            align-items: flex-start;
         }
        &__img {
             &-wrap {

@@ -27,8 +27,7 @@ const closeSidebarPanel = ()=> {
 
 <style lang="scss" scoped>
     .sidebar {
-
-            &__backdrop {
+        &__backdrop {
             background-color:transparent;
             width: 100vw;
             height: 100vh;
@@ -39,16 +38,16 @@ const closeSidebarPanel = ()=> {
         }
 
         &__panel {
-            transition: var(--transition);
-            overflow: auto;
-            background-color:#fff;
             position: fixed;
             left: 0;
             top: 0;
+            width: 100%;
             height: 277px;
             z-index: 999;
+            transition: var(--transition);
+            overflow: hidden;
             padding: 66px 30px 10px;
-            width: 100%;
+            background-color:#fff;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
     }
@@ -56,7 +55,8 @@ const closeSidebarPanel = ()=> {
     transition: all 0.5s ease-out;
 }
 .slide-enter-from {
-    transform: translateY(-50%);
+    // transform: translateY(-50%);
+    height: 0;
 }
 .slide-leave-active {
     transition: all 0.8s ease-in;
@@ -64,7 +64,8 @@ const closeSidebarPanel = ()=> {
 .slide-leave-to {
     opacity: 0;
     transition: all 0.8s ease-in-out;
-    transform: translateY(-50%);
+    // transform: translateY(-50%);
+    height: 0;
 }
 @media(min-width:992px) {
     .sidebar {
